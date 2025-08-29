@@ -83,6 +83,48 @@
             resize: vertical;
             min-height: 120px;
         }
+        
+        /* --- Styles for Searchable Dropdown --- */
+        .searchable-dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            width: 100%;
+            border: 1px solid #e1e5e9;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content .option {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content .option:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .search-input:focus ~ .dropdown-content {
+            display: block;
+        }
+        /* --- End Searchable Dropdown Styles --- */
+
 
         button {
             width: 100%;
@@ -140,20 +182,6 @@
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
-        }
-
-        .config-note {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 25px;
-            color: #856404;
-            font-size: 14px;
-        }
-
-        .config-note strong {
-            color: #6c5600;
         }
 
         .evaluation-section {
@@ -226,31 +254,31 @@
 </head>
 <body>
     <div class="container">
-        <h1> <img src="https://placehold.co/100x100/667eea/white?text=Logo" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
+        <h1> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLwzZ4giGuMjPXUKqzZ547dxlk1Pojf5zEsA&s" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
 
         <form id="evaluationForm">
             <!-- จังหวัด -->
-            <div class="form-group">
-                <label for="province">จังหวัด</label>
-                <select id="province" name="province" required>
-                    <option value="">กำลังโหลดข้อมูล...</option>
-                </select>
+            <div class="form-group searchable-dropdown">
+                <label for="province-search">จังหวัด</label>
+                <input type="text" id="province-search" class="search-input" placeholder="กำลังโหลดข้อมูล..." autocomplete="off" required>
+                <input type="hidden" id="province" name="province">
+                <div class="dropdown-content" id="province-list"></div>
             </div>
 
             <!-- ผู้ถูกเข้าเยี่ยม -->
-            <div class="form-group">
-                <label for="evaluator">ผู้ถูกเข้าเยี่ยม</label>
-                <select id="evaluator" name="evaluator" required>
-                    <option value="">กรุณาเลือกจังหวัดก่อน</option>
-                </select>
+            <div class="form-group searchable-dropdown">
+                <label for="evaluator-search">ผู้ถูกเข้าเยี่ยม</label>
+                <input type="text" id="evaluator-search" class="search-input" placeholder="กรุณาเลือกจังหวัดก่อน" autocomplete="off" required disabled>
+                <input type="hidden" id="evaluator" name="evaluator">
+                <div class="dropdown-content" id="evaluator-list"></div>
             </div>
 
             <!-- ชื่อสาขาที่เข้าเยี่ยม -->
-            <div class="form-group">
-                <label for="branch">ชื่อสาขาที่เข้าเยี่ยม</label>
-                <select id="branch" name="branch" required>
-                    <option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>
-                </select>
+            <div class="form-group searchable-dropdown">
+                <label for="branch-search">ชื่อสาขาที่เข้าเยี่ยม</label>
+                <input type="text" id="branch-search" class="search-input" placeholder="กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน" autocomplete="off" required disabled>
+                <input type="hidden" id="branch" name="branch">
+                <div class="dropdown-content" id="branch-list"></div>
             </div>
 
             <div class="form-group">
@@ -406,72 +434,135 @@
 
     <script>
         // ⚠️ Paste the Web App URL for your Google Apps Script here.
-        // This URL will be used for both getting data and posting data.
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbWHT-XQnLxBQYa4lOcjsdNTcN6EAYXEd9pXjhvt5SYIHLiI3GKrvMC8tZtx2DXlo2Mg/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGKdUwbWGyqczifq6g4Fvyvm7HcUHlg7pr00fhwG4_FeVi4Vwc3CZfttb_OZXKIuBm/exec';
     
-        const provinceSelect = document.getElementById('province');
-        const evaluatorSelect = document.getElementById('evaluator');
-        const branchSelect = document.getElementById('branch');
-    
-        // This object will hold the data we fetch from the Google Sheet.
         let sheetData = {};
-    
-        // This function runs as soon as the page is loaded.
+
+        // --- DOM Elements ---
+        const provinceSearchInput = document.getElementById('province-search');
+        const provinceHiddenInput = document.getElementById('province');
+        const provinceListDiv = document.getElementById('province-list');
+
+        const evaluatorSearchInput = document.getElementById('evaluator-search');
+        const evaluatorHiddenInput = document.getElementById('evaluator');
+        const evaluatorListDiv = document.getElementById('evaluator-list');
+
+        const branchSearchInput = document.getElementById('branch-search');
+        const branchHiddenInput = document.getElementById('branch');
+        const branchListDiv = document.getElementById('branch-list');
+
+        // --- Main Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            fetchDataAndPopulateProvinces();
+            fetchInitialData();
         });
-    
-        // Fetches data from our Google Script and populates the first dropdown.
-        function fetchDataAndPopulateProvinces() {
+
+        function fetchInitialData() {
+            provinceSearchInput.placeholder = "กำลังโหลดข้อมูล...";
             fetch(GOOGLE_SCRIPT_URL)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+                .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
                 .then(data => {
-                    if (data.error) {
-                       throw new Error(data.error);
-                    }
-                    sheetData = data; // Store the fetched data globally
-                    provinceSelect.innerHTML = '<option value="">เลือกจังหวัด</option>'; // Clear existing options
-                    
-                    // Populate the province dropdown
-                    Object.keys(sheetData).sort().forEach(province => {
-                        provinceSelect.add(new Option(province, province));
-                    });
+                    if (data.error) throw new Error(data.error);
+                    sheetData = data;
+                    setupSearchableDropdown(
+                        provinceSearchInput, provinceHiddenInput, provinceListDiv, Object.keys(sheetData).sort(), onProvinceSelect
+                    );
+                    provinceSearchInput.placeholder = "ค้นหาและเลือกจังหวัด";
                 })
                 .catch(error => {
                     console.error('Error fetching dynamic data:', error);
-                    provinceSelect.innerHTML = '<option value="">โหลดข้อมูลไม่สำเร็จ</option>';
+                    provinceSearchInput.placeholder = "โหลดข้อมูลไม่สำเร็จ";
                     alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
                 });
         }
-    
-        // Event listener for province selection.
-        provinceSelect.addEventListener('change', function() {
-            const persons = sheetData[this.value] || {};
-            evaluatorSelect.innerHTML = '<option value="">เลือกผู้ถูกเข้าเยี่ยม</option>';
-            branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-            Object.keys(persons).sort().forEach(person => {
-                evaluatorSelect.add(new Option(person, person));
+
+        // --- Event Handlers ---
+        function onProvinceSelect(selectedValue) {
+            // Reset downstream dropdowns
+            resetDropdown(evaluatorSearchInput, evaluatorHiddenInput, evaluatorListDiv, "กรุณาเลือกจังหวัดก่อน");
+            resetDropdown(branchSearchInput, branchHiddenInput, branchListDiv, "กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน");
+            
+            const persons = sheetData[selectedValue] || {};
+            setupSearchableDropdown(
+                evaluatorSearchInput, evaluatorHiddenInput, evaluatorListDiv, Object.keys(persons).sort(), onEvaluatorSelect
+            );
+            evaluatorSearchInput.disabled = false;
+            evaluatorSearchInput.placeholder = "ค้นหาและเลือกผู้ถูกเข้าเยี่ยม";
+        }
+
+        function onEvaluatorSelect(selectedValue) {
+            resetDropdown(branchSearchInput, branchHiddenInput, branchListDiv, "กรุณาเลือกสาขา");
+            const province = provinceHiddenInput.value;
+            const branches = sheetData[province]?.[selectedValue] || [];
+            setupSearchableDropdown(
+                branchSearchInput, branchHiddenInput, branchListDiv, branches.sort(), null // No callback for the last dropdown
+            );
+            branchSearchInput.disabled = false;
+            branchSearchInput.placeholder = "ค้นหาและเลือกสาขา";
+        }
+
+        // --- Generic Dropdown Functions ---
+        function setupSearchableDropdown(searchInput, hiddenInput, contentDiv, items, onSelectCallback) {
+            contentDiv.innerHTML = '';
+            items.forEach(item => {
+                const optionDiv = document.createElement('div');
+                optionDiv.textContent = item;
+                optionDiv.classList.add('option');
+                optionDiv.addEventListener('click', () => {
+                    searchInput.value = item;
+                    hiddenInput.value = item;
+                    contentDiv.classList.remove('show');
+                    if (onSelectCallback) {
+                        onSelectCallback(item);
+                    }
+                });
+                contentDiv.appendChild(optionDiv);
             });
-        });
-    
-        // Event listener for employee selection.
-        evaluatorSelect.addEventListener('change', function() {
-            const branches = sheetData[provinceSelect.value]?.[this.value] || [];
-            branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
-            branches.sort().forEach(branch => {
-                branchSelect.add(new Option(branch, branch));
+
+            searchInput.addEventListener('input', () => {
+                contentDiv.classList.add('show');
+                filterFunction(searchInput, contentDiv);
             });
+
+            searchInput.addEventListener('focus', () => {
+                contentDiv.classList.add('show');
+                filterFunction(searchInput, contentDiv); // Show all options on focus
+            });
+        }
+        
+        function filterFunction(input, contentDiv) {
+            const filter = input.value.toUpperCase();
+            const options = contentDiv.getElementsByClassName('option');
+            for (let i = 0; i < options.length; i++) {
+                const txtValue = options[i].textContent || options[i].innerText;
+                options[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+
+        function resetDropdown(searchInput, hiddenInput, listDiv, placeholder) {
+            searchInput.value = '';
+            hiddenInput.value = '';
+            listDiv.innerHTML = '';
+            searchInput.placeholder = placeholder;
+            searchInput.disabled = true;
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            if (!e.target.matches('.search-input')) {
+                document.querySelectorAll('.dropdown-content').forEach(div => div.classList.remove('show'));
+            }
         });
-    
-        // Event listener for form submission.
+
+        // --- Form Submission Logic (Unchanged) ---
         document.getElementById('evaluationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Validate hidden inputs are filled
+            if (!provinceHiddenInput.value || !evaluatorHiddenInput.value || !branchHiddenInput.value) {
+                alert('กรุณาเลือกข้อมูลจากทุกช่องค้นหาให้ครบถ้วน');
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             const loading = document.getElementById('loading');
             const success = document.getElementById('success');
@@ -505,19 +596,21 @@
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(dataObject),
-                mode: 'no-cors' // Use no-cors for simple submissions to Google Apps Script
+                mode: 'no-cors'
             })
             .then(() => {
-                // Since no-cors hides the actual response, we assume success if fetch doesn't throw an error.
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'บันทึกผลการประเมิน';
                 success.style.display = 'block';
                 this.reset();
-                // After resetting, clear the dropdowns and re-fetch the initial data.
-                evaluatorSelect.innerHTML = '<option value="">กรุณาเลือกจังหวัดก่อน</option>';
-                branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-                fetchDataAndPopulateProvinces(); 
+                
+                // Reset custom dropdowns to initial state
+                resetDropdown(provinceSearchInput, provinceHiddenInput, provinceListDiv, "ค้นหาและเลือกจังหวัด");
+                resetDropdown(evaluatorSearchInput, evaluatorHiddenInput, evaluatorListDiv, "กรุณาเลือกจังหวัดก่อน");
+                resetDropdown(branchSearchInput, branchHiddenInput, branchListDiv, "กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน");
+                fetchInitialData();
+
                 success.scrollIntoView({ behavior: 'smooth' });
             })
             .catch((err) => {
@@ -533,3 +626,4 @@
     </script>
 </body>
 </html>
+
