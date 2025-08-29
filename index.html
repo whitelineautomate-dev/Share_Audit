@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</title>
+    <!-- Choices.js CSS for integrated search styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     <style>
         * {
             margin: 0;
@@ -12,7 +14,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif; /* Using Inter font */
             background: black;
             min-height: 100vh;
             display: flex;
@@ -37,6 +39,7 @@
             margin: 0 auto 15px;
             width: 100px;
             height: auto;
+            border-radius: 8px; /* Added rounded corners */
         }
 
         h1 {
@@ -61,7 +64,8 @@
             font-weight: 600;
         }
 
-        input, textarea, select {
+        /* Styling for standard inputs and textareas */
+        input[type="date"], input[type="time"], textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #e1e5e9;
@@ -71,7 +75,7 @@
             background: #f8f9fa;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input[type="date"]:focus, input[type="time"]:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -191,6 +195,45 @@
             font-weight: normal;
         }
 
+        /* Custom styling for Choices.js dropdowns */
+        .choices__inner {
+            background-color: #f8f9fa;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 8px 15px; /* Adjusted padding to match other inputs */
+            min-height: 48px; /* Ensure consistent height */
+        }
+        .choices__list.choices__list--single {
+            padding: 0;
+        }
+        .choices__item.choices__item--choice {
+            padding: 10px 15px;
+        }
+        .choices__input {
+            padding: 15px; /* Match other input padding */
+            border-radius: 12px; /* Match other input border-radius */
+            font-size: 16px; /* Match other input font-size */
+            margin-bottom: 0; /* Remove default margin */
+            width: 100%; /* Ensure it takes full width */
+        }
+        .choices__list--dropdown .choices__item--selectable.is-highlighted {
+            background-color: #e6eafb; /* Highlight color on hover */
+            color: #333;
+        }
+        .choices[data-type*="select-one"] .choices__inner {
+            padding-bottom: 5px; /* Adjust if needed */
+        }
+        .choices[data-type*="select-one"] .choices__input {
+            background-color: #f8f9fa;
+        }
+        /* Focus state for Choices.js */
+        .choices.is-focused .choices__inner,
+        .choices.is-open .choices__inner {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+
         @media (max-width: 600px) {
             body {
                 padding: 0;
@@ -208,7 +251,7 @@
                 font-size: 1.3rem;
             }
 
-            input, textarea, select, button {
+            input[type="date"], input[type="time"], textarea, button {
                 padding: 12px;
                 font-size: 14px;
             }
@@ -221,12 +264,23 @@
             .evaluation-section h2 {
             font-size: 1.2rem;
             }
+            .choices__inner {
+                padding: 6px 10px;
+            }
+            .choices__input {
+                padding: 12px;
+                font-size: 14px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLwzZ4giGuMjPXUKqzZ547dxlk1Pojf5zEsA&s" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
+        <h1>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLwzZ4giGuMjPXUKqzZ547dxlk1Pojf5zEsA&s" alt="Logo" class="logo">
+            แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน
+        </h1>
 
         <form id="evaluationForm">
             <!-- จังหวัด -->
@@ -273,155 +327,175 @@
                 </div>
             </div>
 
-    <!-- SECTION 14 -->
-    <div class="evaluation-section">
-        <h2>การเข้าหาลูกค้า (Approach) + Script</h2>
+            <!-- SECTION 14 -->
+            <div class="evaluation-section">
+                <h2>การเข้าหาลูกค้า (Approach) + Script</h2>
 
-        <div class="form-group">
-            <label>พนักงานทักทายลูกค้าทันทีที่เดินเข้าร้าน *</label>
-            <select name="greeting" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่ทักทาย</option>
-                <option value="5">5 คะแนน - ทักทายภายใน 10 วินาที</option>
-                <option value="10">10 คะแนน - ทักทายภายใน 5 วินาที</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>พนักงานทักทายลูกค้าทันทีที่เดินเข้าร้าน *</label>
+                    <select name="greeting" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่ทักทาย</option>
+                        <option value="5">5 คะแนน - ทักทายภายใน 10 วินาที</option>
+                        <option value="10">10 คะแนน - ทักทายภายใน 5 วินาที</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>พนักงานเป็นฝ่ายเริ่มเดินเข้าหาลูกค้าก่อน *</label>
-            <select name="initiateContact" class="score-select" required>
-                <option value="0">0 คะแนน - ต้องรอให้ลูกค้าเรียก</option>
-                <option value="10">10 คะแนน - เป็นฝ่ายเข้าหาลูกค้าด้วยตนเอง</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>พนักงานเป็นฝ่ายเริ่มเดินเข้าหาลูกค้าก่อน *</label>
+                    <select name="initiateContact" class="score-select" required>
+                        <option value="0">0 คะแนน - ต้องรอให้ลูกค้าเรียก</option>
+                        <option value="10">10 คะแนน - เป็นฝ่ายเข้าหาลูกค้าด้วยตนเอง</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>พนักงานแนะนำตัวเองหรือกล่าวเสนอความช่วยเหลือ *</label>
-            <select name="introduction" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่แนะนำตัวหรือไม่เสนอความช่วยเหลือ</option>
-                <option value="10">10 คะแนน - แนะนำตัวหรือเสนอความช่วยเหลืออย่างชัดเจน</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>พนักงานแนะนำตัวเองหรือกล่าวเสนอความช่วยเหลือ *</label>
+                    <select name="introduction" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่แนะนำตัวหรือไม่เสนอความช่วยเหลือ</option>
+                        <option value="10">10 คะแนน - แนะนำตัวหรือเสนอความช่วยเหลืออย่างชัดเจน</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>พนักงานมีความกระตือรือร้นและแสดงความพร้อมในการให้บริการ *</label>
-            <select name="enthusiasm" class="score-select" required>
-                <option value="0">0 คะแนน - แสดงท่าทีลังเล</option>
-                <option value="10">10 คะแนน - เดินเข้าหาลูกค้าอย่างมั่นใจ</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>พนักงานมีความกระตือรือร้นและแสดงความพร้อมในการให้บริการ *</label>
+                    <select name="enthusiasm" class="score-select" required>
+                        <option value="0">0 คะแนน - แสดงท่าทีลังเล</option>
+                        <option value="10">10 คะแนน - เดินเข้าหาลูกค้าอย่างมั่นใจ</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>พนักงานสามารถพูด Script ตาม SOP ที่กำหนด *</label>
-            <select name="sopScript" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่สนทนาตาม Script หรือไม่สนทนาเลย</option>
-                <option value="5">5 คะแนน - สนทนาได้แต่ไม่ครบถ้วนตาม SOP</option>
-                <option value="10">10 คะแนน - สนทนาครบถ้วนและถูกต้องตามลำดับขั้นตอนใน SOP</option>
-            </select>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label>พนักงานสามารถพูด Script ตาม SOP ที่กำหนด *</label>
+                    <select name="sopScript" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่สนทนาตาม Script หรือไม่สนทนาเลย</option>
+                        <option value="5">5 คะแนน - สนทนาได้แต่ไม่ครบถ้วนตาม SOP</option>
+                        <option value="10">10 คะแนน - สนทนาครบถ้วนและถูกต้องตามลำดับขั้นตอนใน SOP</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- SECTION 15 -->
-    <div class="evaluation-section">
-        <h2>ทักษะการขาย (Selling Skill & Switching)</h2>
-        <div class="form-group">
-            <label>พนักงานมีการเสนอขายสินค้าเพิ่มเติม *</label>
-            <select name="upsell" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่มีการนำเสนอเพิ่มเติม</option>
-                <option value="5">5 คะแนน - มีการนำเสนอเพิ่มเติม</option>
-            </select>
-        </div>
+            <!-- SECTION 15 -->
+            <div class="evaluation-section">
+                <h2>ทักษะการขาย (Selling Skill & Switching)</h2>
+                <div class="form-group">
+                    <label>พนักงานมีการเสนอขายสินค้าเพิ่มเติม *</label>
+                    <select name="upsell" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่มีการนำเสนอเพิ่มเติม</option>
+                        <option value="5">5 คะแนน - มีการนำเสนอเพิ่มเติม</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>สามารถอธิบายข้อดีของแบรนด์ได้ *</label>
-            <select name="brandKnowledge" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่สามารถอธิบายได้</option>
-                <option value="5">5 คะแนน - อธิบายได้บางส่วน</option>
-                <option value="10">10 คะแนน - อธิบายได้ชัดเจน</option>
-            </select>
-        </div>
+                <div class="form-group">
+                    <label>สามารถอธิบายข้อดีของแบรนด์ได้ *</label>
+                    <select name="brandKnowledge" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่สามารถอธิบายได้</option>
+                        <option value="5">5 คะแนน - อธิบายได้บางส่วน</option>
+                        <option value="10">10 คะแนน - อธิบายได้ชัดเจน</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>มีความพยายามในการโน้มน้าวใจ *</label>
-            <select name="persuasion" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่พยายามนำเสนอ</option>
-                <option value="10">10 คะแนน - พยายามนำเสนอแม้ลูกค้าลังเล</option>
-            </select>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label>มีความพยายามในการโน้มน้าวใจ *</label>
+                    <select name="persuasion" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่พยายามนำเสนอ</option>
+                        <option value="10">10 คะแนน - พยายามนำเสนอแม้ลูกค้าลังเล</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- SECTION 16 -->
-    <div class="evaluation-section">
-        <h2>ความรู้เกี่ยวกับผลิตภัณฑ์ (Product Knowledge)</h2>
-        <div class="form-group">
-            <label>สามารถอธิบายคุณสมบัติสินค้าได้ *</label>
-            <select name="productFeatures" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่สามารถอธิบายได้</option>
-                <option value="5">5 คะแนน - อธิบายได้บางส่วน</option>
-                <option value="10">10 คะแนน - อธิบายได้ถูกต้องครบถ้วน</option>
-            </select>
-        </div>
+            <!-- SECTION 16 -->
+            <div class="evaluation-section">
+                <h2>ความรู้เกี่ยวกับผลิตภัณฑ์ (Product Knowledge)</h2>
+                <div class="form-group">
+                    <label>สามารถอธิบายคุณสมบัติสินค้าได้ *</label>
+                    <select name="productFeatures" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่สามารถอธิบายได้</option>
+                        <option value="5">5 คะแนน - อธิบายได้บางส่วน</option>
+                        <option value="10">10 คะแนน - อธิบายได้ถูกต้องครบถ้วน</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>สามารถแนะนำสินค้าได้ตรงตามความต้องการ *</label>
-            <select name="productRecommendation" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่ตรงตามความต้องการ</option>
-                <option value="5">5 คะแนน - แนะนำได้แต่ไม่ครบ</option>
-                <option value="10">10 คะแนน - ตรงตามความต้องการ</option>
-            </select>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label>สามารถแนะนำสินค้าได้ตรงตามความต้องการ *</label>
+                    <select name="productRecommendation" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่ตรงตามความต้องการ</option>
+                        <option value="5">5 คะแนน - แนะนำได้แต่ไม่ครบ</option>
+                        <option value="10">10 คะแนน - ตรงตามความต้องการ</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- SECTION 17 -->
-    <div class="evaluation-section">
-        <h2>ภาพลักษณ์ (Personal Image)</h2>
-        <div class="form-group">
-            <label>พนักงานแต่งกายสุภาพ *</label>
-            <select name="appearance" class="score-select" required>
-                <option value="0">0 คะแนน - ไม่ถูกต้อง</option>
-                <option value="5">5 คะแนน - ถูกต้องตามระเบียบ</option>
-            </select>
-        </div>
-    </div>
+            <!-- SECTION 17 -->
+            <div class="evaluation-section">
+                <h2>ภาพลักษณ์ (Personal Image)</h2>
+                <div class="form-group">
+                    <label>พนักงานแต่งกายสุภาพ *</label>
+                    <select name="appearance" class="score-select" required>
+                        <option value="0">0 คะแนน - ไม่ถูกต้อง</option>
+                        <option value="5">5 คะแนน - ถูกต้องตามระเบียบ</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- SECTION 18 -->
-    <div class="evaluation-section">
-        <h2>สรุปผลการประเมินและข้อเสนอแนะ</h2>
-        <div class="form-group">
-            <label>จุดแข็ง / สิ่งที่ทำได้ดี *</label>
-            <textarea id="strengths" name="strengths" required></textarea>
-        </div>
-        <div class="form-group">
-            <label>สิ่งที่ควรปรับปรุง *</label>
-            <textarea id="improvements" name="improvements" required></textarea>
-        </div>
-    </div>
+            <!-- SECTION 18 -->
+            <div class="evaluation-section">
+                <h2>สรุปผลการประเมินและข้อเสนอแนะ</h2>
+                <div class="form-group">
+                    <label>จุดแข็ง / สิ่งที่ทำได้ดี *</label>
+                    <textarea id="strengths" name="strengths" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>สิ่งที่ควรปรับปรุง *</label>
+                    <textarea id="improvements" name="improvements" required></textarea>
+                </div>
+            </div>
 
-    <button type="submit" id="submitBtn">บันทึกผลการประเมิน</button>
-</form>
+            <button type="submit" id="submitBtn">บันทึกผลการประเมิน</button>
+        </form>
 
         <div id="loading" class="loading">กำลังบันทึกข้อมูล...</div>
         <div id="success" class="success">บันทึกข้อมูลสำเร็จ</div>
         <div id="error" class="error">เกิดข้อผิดพลาด กรุณาลองใหม่</div>
     </div>
 
+    <!-- Choices.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script>
         // ⚠️ Paste the Web App URL for your Google Apps Script here.
         // This URL will be used for both getting data and posting data.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGKdUwbWGyqczifq6g4Fvyvm7HcUHlg7pr00fhwG4_FeVi4Vwc3CZfttb_OZXKIuBm/exec';
-    
-        const provinceSelect = document.getElementById('province');
-        const evaluatorSelect = document.getElementById('evaluator');
-        const branchSelect = document.getElementById('branch');
-    
-        // This object will hold the data we fetch from the Google Sheet.
-        let sheetData = {};
-    
-        // This function runs as soon as the page is loaded.
+        
+        const provinceElement = document.getElementById('province');
+        const evaluatorElement = document.getElementById('evaluator');
+        const branchElement = document.getElementById('branch');
+
+        // Initialize Choices.js instances
+        const provinceChoices = new Choices(provinceElement, {
+            searchEnabled: true,
+            itemSelectText: 'เลือก',
+            placeholder: true,
+            placeholderValue: 'กำลังโหลดข้อมูล...',
+        });
+        const evaluatorChoices = new Choices(evaluatorElement, {
+            searchEnabled: true,
+            itemSelectText: 'เลือก',
+            placeholder: true,
+            placeholderValue: 'กรุณาเลือกจังหวัดก่อน',
+        });
+        const branchChoices = new Choices(branchElement, {
+            searchEnabled: true,
+            itemSelectText: 'เลือก',
+            placeholder: true,
+            placeholderValue: 'กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน',
+        });
+        
+        let sheetData = {}; // This object will hold the data we fetch from the Google Sheet.
+        
         document.addEventListener('DOMContentLoaded', () => {
             fetchDataAndPopulateProvinces();
         });
-    
-        // Fetches data from our Google Script and populates the first dropdown.
+        
+        // Fetches data from our Google Script and populates the province dropdown.
         function fetchDataAndPopulateProvinces() {
             fetch(GOOGLE_SCRIPT_URL)
                 .then(response => {
@@ -435,39 +509,58 @@
                        throw new Error(data.error);
                     }
                     sheetData = data; // Store the fetched data globally
-                    provinceSelect.innerHTML = '<option value="">เลือกจังหวัด</option>'; // Clear existing options
                     
-                    // Populate the province dropdown
-                    Object.keys(sheetData).sort().forEach(province => {
-                        provinceSelect.add(new Option(province, province));
-                    });
+                    const provinces = Object.keys(sheetData).sort().map(province => ({ value: province, label: province }));
+                    provinceChoices.setChoices([
+                        { value: '', label: 'เลือกจังหวัด', selected: true, disabled: true }, // Default placeholder option
+                        ...provinces
+                    ], 'value', 'label', false); // Do not add new choices (false)
+                    provinceChoices.setChoiceByValue(''); // Ensure placeholder is selected
                 })
                 .catch(error => {
                     console.error('Error fetching dynamic data:', error);
-                    provinceSelect.innerHTML = '<option value="">โหลดข้อมูลไม่สำเร็จ</option>';
-                    alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
+                    provinceChoices.setChoices([
+                        { value: '', label: 'โหลดข้อมูลไม่สำเร็จ', selected: true, disabled: true }
+                    ], 'value', 'label', false);
+                    showMessageBox('error', 'ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
                 });
         }
-    
-        // Event listener for province selection.
-        provinceSelect.addEventListener('change', function() {
-            const persons = sheetData[this.value] || {};
-            evaluatorSelect.innerHTML = '<option value="">เลือกผู้ถูกเข้าเยี่ยม</option>';
-            branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-            Object.keys(persons).sort().forEach(person => {
-                evaluatorSelect.add(new Option(person, person));
-            });
+        
+        // Event listener for province selection using Choices.js custom event.
+        provinceElement.addEventListener('change', function() {
+            const selectedProvince = provinceChoices.getValue(true); // Get the value from Choices.js
+            const persons = sheetData[selectedProvince] || {};
+            const evaluatorOptions = Object.keys(persons).sort().map(person => ({ value: person, label: person }));
+            
+            evaluatorChoices.clearStore(); // Clear previous options
+            evaluatorChoices.setChoices([
+                { value: '', label: 'เลือกผู้ถูกเข้าเยี่ยม', selected: true, disabled: true }, // Default placeholder option
+                ...evaluatorOptions
+            ], 'value', 'label', false);
+            evaluatorChoices.setChoiceByValue(''); // Ensure placeholder is selected
+
+            branchChoices.clearStore(); // Clear branch options
+            branchChoices.setChoices([
+                { value: '', label: 'กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน', selected: true, disabled: true }
+            ], 'value', 'label', false);
+            branchChoices.setChoiceByValue(''); // Ensure placeholder is selected
         });
-    
-        // Event listener for employee selection.
-        evaluatorSelect.addEventListener('change', function() {
-            const branches = sheetData[provinceSelect.value]?.[this.value] || [];
-            branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
-            branches.sort().forEach(branch => {
-                branchSelect.add(new Option(branch, branch));
-            });
+        
+        // Event listener for evaluator selection using Choices.js custom event.
+        evaluatorElement.addEventListener('change', function() {
+            const selectedProvince = provinceChoices.getValue(true);
+            const selectedEvaluator = evaluatorChoices.getValue(true); // Get the value from Choices.js
+            const branches = sheetData[selectedProvince]?.[selectedEvaluator] || [];
+            const branchOptions = branches.sort().map(branch => ({ value: branch, label: branch }));
+            
+            branchChoices.clearStore(); // Clear previous options
+            branchChoices.setChoices([
+                { value: '', label: 'เลือกสาขา', selected: true, disabled: true }, // Default placeholder option
+                ...branchOptions
+            ], 'value', 'label', false);
+            branchChoices.setChoiceByValue(''); // Ensure placeholder is selected
         });
-    
+        
         // Event listener for form submission.
         document.getElementById('evaluationForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -476,14 +569,14 @@
             const loading = document.getElementById('loading');
             const success = document.getElementById('success');
             const error = document.getElementById('error');
-    
+            
             success.style.display = 'none';
             error.style.display = 'none';
-    
+            
             submitBtn.disabled = true;
             submitBtn.textContent = 'กำลังบันทึก...';
             loading.style.display = 'block';
-    
+            
             function calculateTotalScore() {
                 const scoreSelects = document.querySelectorAll('.score-select');
                 let totalScore = 0;
@@ -492,32 +585,46 @@
                 });
                 return totalScore;
             }
-    
+            
             const formData = new FormData(this);
             formData.append('totalScore', calculateTotalScore());
             formData.append('timestamp', new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }));
-    
+            
             const dataObject = {};
             for (let [key, value] of formData.entries()) {
                 dataObject[key] = value;
             }
-    
+            
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(dataObject),
+                headers: {
+                    'Content-Type': 'application/json', // Specify content type for JSON body
+                },
                 mode: 'no-cors' // Use no-cors for simple submissions to Google Apps Script
             })
             .then(() => {
-                // Since no-cors hides the actual response, we assume success if fetch doesn't throw an error.
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'บันทึกผลการประเมิน';
                 success.style.display = 'block';
                 this.reset();
-                // After resetting, clear the dropdowns and re-fetch the initial data.
-                evaluatorSelect.innerHTML = '<option value="">กรุณาเลือกจังหวัดก่อน</option>';
-                branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-                fetchDataAndPopulateProvinces(); 
+                
+                // Reset Choices.js dropdowns and re-fetch initial data
+                evaluatorChoices.clearStore();
+                evaluatorChoices.setChoices([
+                    { value: '', label: 'กรุณาเลือกจังหวัดก่อน', selected: true, disabled: true }
+                ], 'value', 'label', false);
+                evaluatorChoices.setChoiceByValue('');
+
+                branchChoices.clearStore();
+                branchChoices.setChoices([
+                    { value: '', label: 'กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน', selected: true, disabled: true }
+                ], 'value', 'label', false);
+                branchChoices.setChoiceByValue('');
+                
+                // Re-fetch to refresh the province list in case data changed
+                fetchDataAndPopulateProvinces();
                 success.scrollIntoView({ behavior: 'smooth' });
             })
             .catch((err) => {
@@ -530,6 +637,24 @@
                 error.scrollIntoView({ behavior: 'smooth' });
             });
         });
+
+        // Custom message box function (replaces alert)
+        function showMessageBox(type, message) {
+            const messageBox = document.createElement('div');
+            messageBox.className = type === 'error' ? 'error' : 'success';
+            messageBox.textContent = message;
+            messageBox.style.display = 'block';
+            messageBox.style.position = 'fixed';
+            messageBox.style.top = '20px';
+            messageBox.style.left = '50%';
+            messageBox.style.transform = 'translateX(-50%)';
+            messageBox.style.zIndex = '1000';
+            document.body.appendChild(messageBox);
+
+            setTimeout(() => {
+                messageBox.remove();
+            }, 5000); // Remove message after 5 seconds
+        }
     </script>
 </body>
 </html>
