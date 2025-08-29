@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</title>
+    <!-- Tom Select CSS for searchable dropdown styling -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <style>
         * {
@@ -62,7 +63,7 @@
             font-weight: 600;
         }
 
-        input, textarea, select {
+        input, textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #e1e5e9;
@@ -71,29 +72,44 @@
             transition: all 0.3s ease;
             background: #f8f9fa;
         }
-        /* Style for Tom Select's input element to make it consistent */
-        .ts-control {
+        /* Styles for Tom Select controls to ensure consistency with other inputs */
+        .ts-wrapper .ts-control {
+            width: 100%;
+            padding: 15px;
             border: 2px solid #e1e5e9;
             border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
             background: #f8f9fa;
         }
-        .ts-control.focus {
+
+        .ts-wrapper.focus .ts-control {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             background: white;
             transform: translateY(-2px);
         }
+
         .ts-dropdown {
-            border: 1px solid #e1e5e9;
             border-radius: 12px;
-            background: white;
-        }
-        .ts-item, .ts-dropdown-content .option {
-            padding: 10px 15px;
+            border: 1px solid #e1e5e9;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        input:focus, textarea:focus, select:focus {
+        .ts-item, .ts-dropdown-content .option {
+            padding: 10px 15px;
+            border-radius: 8px; /* Slightly rounded options */
+        }
+
+        .ts-dropdown-content .option.selected,
+        .ts-dropdown-content .option.active {
+            background-color: #e6e9fa; /* Light blue background for selected/hovered */
+            color: #3b82f6;
+        }
+
+
+        input:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -230,7 +246,7 @@
                 font-size: 1.3rem;
             }
 
-            input, textarea, select, button {
+            input, textarea, .ts-wrapper .ts-control, button {
                 padding: 12px;
                 font-size: 14px;
             }
@@ -251,6 +267,7 @@
         <h1> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLwzZ4giGuMjPXUKqzZ547dxlk1Pojf5zEsA&s" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
 
         <form id="evaluationForm">
+            <!-- จังหวัด -->
             <div class="form-group">
                 <label for="province">จังหวัด</label>
                 <select id="province" name="province" required>
@@ -258,6 +275,7 @@
                 </select>
             </div>
 
+            <!-- ผู้ถูกเข้าเยี่ยม -->
             <div class="form-group">
                 <label for="evaluator">ผู้ถูกเข้าเยี่ยม</label>
                 <select id="evaluator" name="evaluator" required>
@@ -265,6 +283,7 @@
                 </select>
             </div>
 
+            <!-- ชื่อสาขาที่เข้าเยี่ยม -->
             <div class="form-group">
                 <label for="branch">ชื่อสาขาที่เข้าเยี่ยม</label>
                 <select id="branch" name="branch" required>
@@ -292,6 +311,7 @@
                 </div>
             </div>
 
+    <!-- SECTION 14 -->
     <div class="evaluation-section">
         <h2>การเข้าหาลูกค้า (Approach) + Script</h2>
 
@@ -338,6 +358,7 @@
         </div>
     </div>
 
+    <!-- SECTION 15 -->
     <div class="evaluation-section">
         <h2>ทักษะการขาย (Selling Skill & Switching)</h2>
         <div class="form-group">
@@ -366,6 +387,7 @@
         </div>
     </div>
 
+    <!-- SECTION 16 -->
     <div class="evaluation-section">
         <h2>ความรู้เกี่ยวกับผลิตภัณฑ์ (Product Knowledge)</h2>
         <div class="form-group">
@@ -387,6 +409,7 @@
         </div>
     </div>
 
+    <!-- SECTION 17 -->
     <div class="evaluation-section">
         <h2>ภาพลักษณ์ (Personal Image)</h2>
         <div class="form-group">
@@ -398,6 +421,7 @@
         </div>
     </div>
 
+    <!-- SECTION 18 -->
     <div class="evaluation-section">
         <h2>สรุปผลการประเมินและข้อเสนอแนะ</h2>
         <div class="form-group">
@@ -417,37 +441,43 @@
         <div id="success" class="success">บันทึกข้อมูลสำเร็จ</div>
         <div id="error" class="error">เกิดข้อผิดพลาด กรุณาลองใหม่</div>
     </div>
+    <!-- Tom Select JS -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
         // ⚠️ Paste the Web App URL for your Google Apps Script here.
         // This URL will be used for both getting data and posting data.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGKdUwbWGyqczifq6g4Fvyvm7HcUHlg7pr00fhwG4_FeVi4Vwc3CZfttb_OZXKIuBm/exec';
-
-        // Initialize Tom Select instances on the dropdowns
-        const provinceSelect = new TomSelect('#province', {
-            sortField: {
-                field: 'text',
-                direction: 'asc'
-            }
-        });
-        const evaluatorSelect = new TomSelect('#evaluator', {
-            sortField: {
-                field: 'text',
-                direction: 'asc'
-            }
-        });
-        const branchSelect = new TomSelect('#branch', {
-            sortField: {
-                field: 'text',
-                direction: 'asc'
-            }
-        });
     
+        // Initialize Tom Select instances on the dropdowns
+        // Using "ts_" prefix for Tom Select instances to differentiate from original HTML elements if needed
+        let ts_provinceSelect;
+        let ts_evaluatorSelect;
+        let ts_branchSelect;
+
         // This object will hold the data we fetch from the Google Sheet.
         let sheetData = {};
     
         // This function runs as soon as the page is loaded.
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Tom Select for all three dropdowns
+            ts_provinceSelect = new TomSelect('#province', {
+                create: false,
+                sortField: { field: 'text', direction: 'asc' },
+                placeholder: 'เลือกจังหวัด'
+            });
+
+            ts_evaluatorSelect = new TomSelect('#evaluator', {
+                create: false,
+                sortField: { field: 'text', direction: 'asc' },
+                placeholder: 'เลือกผู้ถูกเข้าเยี่ยม'
+            });
+
+            ts_branchSelect = new TomSelect('#branch', {
+                create: false,
+                sortField: { field: 'text', direction: 'asc' },
+                placeholder: 'เลือกสาขา'
+            });
+
             fetchDataAndPopulateProvinces();
         });
     
@@ -466,39 +496,180 @@
                     }
                     sheetData = data; // Store the fetched data globally
                     
-                    provinceSelect.clear();
-                    provinceSelect.clearOptions();
-                    provinceSelect.addOption({value: '', text: 'เลือกจังหวัด'});
+                    // Clear and populate province dropdown using Tom Select API
+                    ts_provinceSelect.clear();
+                    ts_provinceSelect.clearOptions();
+                    ts_provinceSelect.addOption({value: '', text: 'เลือกจังหวัด'});
                     
                     Object.keys(sheetData).sort().forEach(province => {
-                        provinceSelect.addOption({value: province, text: province});
+                        ts_provinceSelect.addOption({value: province, text: province});
                     });
                     
-                    provinceSelect.refreshOptions(false);
-                    provinceSelect.setValue('');
+                    ts_provinceSelect.refreshOptions(false);
+                    ts_provinceSelect.setValue('');
                 })
                 .catch(error => {
                     console.error('Error fetching dynamic data:', error);
-                    provinceSelect.clearOptions();
-                    provinceSelect.addOption({value: '', text: 'โหลดข้อมูลไม่สำเร็จ'});
-                    provinceSelect.setValue('');
-                    alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
+                    ts_provinceSelect.clearOptions();
+                    ts_provinceSelect.addOption({value: '', text: 'โหลดข้อมูลไม่สำเร็จ'});
+                    ts_provinceSelect.setValue('');
+                    // Using a custom message box instead of alert()
+                    showMessageBox('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง', 'error');
                 });
         }
     
         // Event listener for province selection.
-        provinceSelect.on('change', function(province) {
+        ts_provinceSelect.on('change', function(province) {
             const persons = sheetData[province] || {};
-            evaluatorSelect.clear();
-            evaluatorSelect.clearOptions();
-            evaluatorSelect.addOption({value: '', text: 'เลือกผู้ถูกเข้าเยี่ยม'});
+            
+            // Clear and populate evaluator dropdown using Tom Select API
+            ts_evaluatorSelect.clear();
+            ts_evaluatorSelect.clearOptions();
+            ts_evaluatorSelect.addOption({value: '', text: 'เลือกผู้ถูกเข้าเยี่ยม'});
             
             Object.keys(persons).sort().forEach(person => {
-                evaluatorSelect.addOption({value: person, text: person});
+                ts_evaluatorSelect.addOption({value: person, text: person});
             });
-            evaluatorSelect.refreshOptions(false);
-            evaluatorSelect.setValue('');
+            ts_evaluatorSelect.refreshOptions(false);
+            ts_evaluatorSelect.setValue('');
 
-            branchSelect.clear();
-            branchSelect.clearOptions();
-            branchSelect
+            // Clear branch dropdown
+            ts_branchSelect.clear();
+            ts_branchSelect.clearOptions();
+            ts_branchSelect.addOption({value: '', text: 'กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน'});
+            ts_branchSelect.setValue('');
+        });
+    
+        // Event listener for employee selection.
+        ts_evaluatorSelect.on('change', function(person) {
+            const branches = sheetData[ts_provinceSelect.getValue()]?.[person] || [];
+            
+            // Clear and populate branch dropdown using Tom Select API
+            ts_branchSelect.clear();
+            ts_branchSelect.clearOptions();
+            ts_branchSelect.addOption({value: '', text: 'เลือกสาขา'});
+            branches.sort().forEach(branch => {
+                ts_branchSelect.addOption({value: branch, text: branch});
+            });
+            ts_branchSelect.refreshOptions(false);
+            ts_branchSelect.setValue('');
+        });
+    
+        // Event listener for form submission.
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const success = document.getElementById('success');
+            const error = document.getElementById('error');
+    
+            success.style.display = 'none';
+            error.style.display = 'none';
+    
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'กำลังบันทึก...';
+            loading.style.display = 'block';
+    
+            function calculateTotalScore() {
+                const scoreSelects = document.querySelectorAll('.score-select');
+                let totalScore = 0;
+                scoreSelects.forEach(select => {
+                    totalScore += parseInt(select.value) || 0;
+                });
+                return totalScore;
+            }
+    
+            const formData = new FormData(this);
+            formData.append('totalScore', calculateTotalScore());
+            formData.append('timestamp', new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }));
+    
+            const dataObject = {};
+            for (let [key, value] of formData.entries()) {
+                dataObject[key] = value;
+            }
+    
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(dataObject),
+                mode: 'no-cors' // Use no-cors for simple submissions to Google Apps Script
+            })
+            .then(() => {
+                // Since no-cors hides the actual response, we assume success if fetch doesn't throw an error.
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'บันทึกผลการประเมิน';
+                success.style.display = 'block';
+                this.reset();
+                // After resetting, clear the dropdowns and re-fetch the initial data.
+                ts_evaluatorSelect.clear();
+                ts_branchSelect.clear();
+                ts_evaluatorSelect.addOption({value: '', text: 'กรุณาเลือกจังหวัดก่อน'});
+                ts_branchSelect.addOption({value: '', text: 'กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน'});
+                ts_evaluatorSelect.setValue('');
+                ts_branchSelect.setValue('');
+                fetchDataAndPopulateProvinces(); 
+                success.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch((err) => {
+                console.error('Error:', err);
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'บันทึกผลการประเมิน';
+                error.textContent = 'เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่';
+                error.style.display = 'block';
+                error.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Custom message box function (instead of alert)
+        function showMessageBox(message, type) {
+            const messageBox = document.createElement('div');
+            messageBox.classList.add('message-box', type);
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+
+            setTimeout(() => {
+                messageBox.remove();
+            }, 5000); // Remove after 5 seconds
+        }
+
+        // Add CSS for the custom message box
+        const style = document.createElement('style');
+        style.textContent = `
+            .message-box {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                border-radius: 8px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 16px;
+                font-weight: 600;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .message-box.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .message-box.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            .message-box.info {
+                background-color: #cce5ff;
+                color: #004085;
+                border: 1px solid #b8daff;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
