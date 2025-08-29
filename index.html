@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</title>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -69,6 +70,27 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: #f8f9fa;
+        }
+        /* Style for Tom Select's input element to make it consistent */
+        .ts-control {
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            background: #f8f9fa;
+        }
+        .ts-control.focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+        .ts-dropdown {
+            border: 1px solid #e1e5e9;
+            border-radius: 12px;
+            background: white;
+        }
+        .ts-item, .ts-dropdown-content .option {
+            padding: 10px 15px;
         }
 
         input:focus, textarea:focus, select:focus {
@@ -229,7 +251,6 @@
         <h1> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLwzZ4giGuMjPXUKqzZ547dxlk1Pojf5zEsA&s" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
 
         <form id="evaluationForm">
-            <!-- จังหวัด -->
             <div class="form-group">
                 <label for="province">จังหวัด</label>
                 <select id="province" name="province" required>
@@ -237,7 +258,6 @@
                 </select>
             </div>
 
-            <!-- ผู้ถูกเข้าเยี่ยม -->
             <div class="form-group">
                 <label for="evaluator">ผู้ถูกเข้าเยี่ยม</label>
                 <select id="evaluator" name="evaluator" required>
@@ -245,7 +265,6 @@
                 </select>
             </div>
 
-            <!-- ชื่อสาขาที่เข้าเยี่ยม -->
             <div class="form-group">
                 <label for="branch">ชื่อสาขาที่เข้าเยี่ยม</label>
                 <select id="branch" name="branch" required>
@@ -273,7 +292,6 @@
                 </div>
             </div>
 
-    <!-- SECTION 14 -->
     <div class="evaluation-section">
         <h2>การเข้าหาลูกค้า (Approach) + Script</h2>
 
@@ -320,7 +338,6 @@
         </div>
     </div>
 
-    <!-- SECTION 15 -->
     <div class="evaluation-section">
         <h2>ทักษะการขาย (Selling Skill & Switching)</h2>
         <div class="form-group">
@@ -349,7 +366,6 @@
         </div>
     </div>
 
-    <!-- SECTION 16 -->
     <div class="evaluation-section">
         <h2>ความรู้เกี่ยวกับผลิตภัณฑ์ (Product Knowledge)</h2>
         <div class="form-group">
@@ -371,7 +387,6 @@
         </div>
     </div>
 
-    <!-- SECTION 17 -->
     <div class="evaluation-section">
         <h2>ภาพลักษณ์ (Personal Image)</h2>
         <div class="form-group">
@@ -383,7 +398,6 @@
         </div>
     </div>
 
-    <!-- SECTION 18 -->
     <div class="evaluation-section">
         <h2>สรุปผลการประเมินและข้อเสนอแนะ</h2>
         <div class="form-group">
@@ -403,15 +417,31 @@
         <div id="success" class="success">บันทึกข้อมูลสำเร็จ</div>
         <div id="error" class="error">เกิดข้อผิดพลาด กรุณาลองใหม่</div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
         // ⚠️ Paste the Web App URL for your Google Apps Script here.
         // This URL will be used for both getting data and posting data.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGKdUwbWGyqczifq6g4Fvyvm7HcUHlg7pr00fhwG4_FeVi4Vwc3CZfttb_OZXKIuBm/exec';
-    
-        const provinceSelect = document.getElementById('province');
-        const evaluatorSelect = document.getElementById('evaluator');
-        const branchSelect = document.getElementById('branch');
+
+        // Initialize Tom Select instances on the dropdowns
+        const provinceSelect = new TomSelect('#province', {
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            }
+        });
+        const evaluatorSelect = new TomSelect('#evaluator', {
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            }
+        });
+        const branchSelect = new TomSelect('#branch', {
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            }
+        });
     
         // This object will hold the data we fetch from the Google Sheet.
         let sheetData = {};
@@ -435,101 +465,40 @@
                        throw new Error(data.error);
                     }
                     sheetData = data; // Store the fetched data globally
-                    provinceSelect.innerHTML = '<option value="">เลือกจังหวัด</option>'; // Clear existing options
                     
-                    // Populate the province dropdown
+                    provinceSelect.clear();
+                    provinceSelect.clearOptions();
+                    provinceSelect.addOption({value: '', text: 'เลือกจังหวัด'});
+                    
                     Object.keys(sheetData).sort().forEach(province => {
-                        provinceSelect.add(new Option(province, province));
+                        provinceSelect.addOption({value: province, text: province});
                     });
+                    
+                    provinceSelect.refreshOptions(false);
+                    provinceSelect.setValue('');
                 })
                 .catch(error => {
                     console.error('Error fetching dynamic data:', error);
-                    provinceSelect.innerHTML = '<option value="">โหลดข้อมูลไม่สำเร็จ</option>';
+                    provinceSelect.clearOptions();
+                    provinceSelect.addOption({value: '', text: 'โหลดข้อมูลไม่สำเร็จ'});
+                    provinceSelect.setValue('');
                     alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
                 });
         }
     
         // Event listener for province selection.
-        provinceSelect.addEventListener('change', function() {
-            const persons = sheetData[this.value] || {};
-            evaluatorSelect.innerHTML = '<option value="">เลือกผู้ถูกเข้าเยี่ยม</option>';
-            branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-            Object.keys(persons).sort().forEach(person => {
-                evaluatorSelect.add(new Option(person, person));
-            });
-        });
-    
-        // Event listener for employee selection.
-        evaluatorSelect.addEventListener('change', function() {
-            const branches = sheetData[provinceSelect.value]?.[this.value] || [];
-            branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
-            branches.sort().forEach(branch => {
-                branchSelect.add(new Option(branch, branch));
-            });
-        });
-    
-        // Event listener for form submission.
-        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        provinceSelect.on('change', function(province) {
+            const persons = sheetData[province] || {};
+            evaluatorSelect.clear();
+            evaluatorSelect.clearOptions();
+            evaluatorSelect.addOption({value: '', text: 'เลือกผู้ถูกเข้าเยี่ยม'});
             
-            const submitBtn = document.getElementById('submitBtn');
-            const loading = document.getElementById('loading');
-            const success = document.getElementById('success');
-            const error = document.getElementById('error');
-    
-            success.style.display = 'none';
-            error.style.display = 'none';
-    
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'กำลังบันทึก...';
-            loading.style.display = 'block';
-    
-            function calculateTotalScore() {
-                const scoreSelects = document.querySelectorAll('.score-select');
-                let totalScore = 0;
-                scoreSelects.forEach(select => {
-                    totalScore += parseInt(select.value) || 0;
-                });
-                return totalScore;
-            }
-    
-            const formData = new FormData(this);
-            formData.append('totalScore', calculateTotalScore());
-            formData.append('timestamp', new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }));
-    
-            const dataObject = {};
-            for (let [key, value] of formData.entries()) {
-                dataObject[key] = value;
-            }
-    
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(dataObject),
-                mode: 'no-cors' // Use no-cors for simple submissions to Google Apps Script
-            })
-            .then(() => {
-                // Since no-cors hides the actual response, we assume success if fetch doesn't throw an error.
-                loading.style.display = 'none';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'บันทึกผลการประเมิน';
-                success.style.display = 'block';
-                this.reset();
-                // After resetting, clear the dropdowns and re-fetch the initial data.
-                evaluatorSelect.innerHTML = '<option value="">กรุณาเลือกจังหวัดก่อน</option>';
-                branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
-                fetchDataAndPopulateProvinces(); 
-                success.scrollIntoView({ behavior: 'smooth' });
-            })
-            .catch((err) => {
-                console.error('Error:', err);
-                loading.style.display = 'none';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'บันทึกผลการประเมิน';
-                error.textContent = 'เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่';
-                error.style.display = 'block';
-                error.scrollIntoView({ behavior: 'smooth' });
+            Object.keys(persons).sort().forEach(person => {
+                evaluatorSelect.addOption({value: person, text: person});
             });
-        });
-    </script>
-</body>
-</html>
+            evaluatorSelect.refreshOptions(false);
+            evaluatorSelect.setValue('');
+
+            branchSelect.clear();
+            branchSelect.clearOptions();
+            branchSelect
