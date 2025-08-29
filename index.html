@@ -226,66 +226,32 @@
 </head>
 <body>
     <div class="container">
-        <div class="container">
-        <h1> <img src="images.png" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
+        <h1> <img src="https://placehold.co/100x100/667eea/white?text=Logo" alt="Logo" class="logo"> แบบฟอร์มการประเมินการปฏิบัติงานของพนักงาน</h1>
 
         <form id="evaluationForm">
-            <!-- ผู้ประเมิน -->
-<div class="form-group">
-    <label for="province">จังหวัด</label>
-    <select id="province" name="province" required>
-        <option value="">เลือกจังหวัด</option>
-        <option value="กาฬสินธุ์">กาฬสินธุ์</option>
-        <option value="ขอนแก่น">ขอนแก่น</option>
-        <option value="ชัยภูมิ">ชัยภูมิ</option>
-        <option value="นครพนม">นครพนม</option>
-        <option value="นครราชสีมา">นครราชสีมา</option>
-        <option value="บึงกาฬ">บึงกาฬ</option>
-        <option value="บุรีรัมย์">บุรีรัมย์</option>
-        <option value="มหาสารคาม">มหาสารคาม</option>
-        <option value="มุกดาหาร">มุกดาหาร</option>
-        <option value="ยโสธร">ยโสธร</option>
-        <option value="ร้อยเอ็ด">ร้อยเอ็ด</option>
-        <option value="ศรีสะเกษ">ศรีสะเกษ</option>
-        <option value="สกลนคร">สกลนคร</option>
-        <option value="สุรินทร์">สุรินทร์</option>
-        <option value="หนองคาย">หนองคาย</option>
-        <option value="หนองบัวลำภู">หนองบัวลำภู</option>
-        <option value="อำนาจเจริญ">อำนาจเจริญ</option>
-        <option value="อุดรธานี">อุดรธานี</option>
-        <option value="อุบลราชธานี">อุบลราชธานี</option>
-    </select>
-</div>
+            <!-- จังหวัด -->
+            <div class="form-group">
+                <label for="province">จังหวัด</label>
+                <select id="province" name="province" required>
+                    <option value="">กำลังโหลดข้อมูล...</option>
+                </select>
+            </div>
 
-<!-- ผู้ถูกเข้าเยี่ยม -->
-<div class="form-group">
-    <label for="evaluator">ผู้ถูกเข้าเยี่ยม</label>
-    <select id="evaluator" name="evaluator" required>
-        <option value="">เลือกผู้ถูกเข้าเยี่ยม</option>
-        <option value="น.ส.ณัฐสนันท์ พงษ์กายี">น.ส.ณัฐสนันท์ พงษ์กายี</option>
-        <option value="น.ส.ปริณดา แก้วน้อย">น.ส.ปริณดา แก้วน้อย</option>
-        <option value="น.ส.รัตนาวรรณ จันร์ดี">น.ส.รัตนาวรรณ จันร์ดี</option>
-        <option value="น.ส.อนุกูล บัวผัน">น.ส.อนุกูล บัวผัน</option>
-        <!-- เพิ่มชื่อทั้งหมดตามจังหวัด -->
-    </select>
-</div>
+            <!-- ผู้ถูกเข้าเยี่ยม -->
+            <div class="form-group">
+                <label for="evaluator">ผู้ถูกเข้าเยี่ยม</label>
+                <select id="evaluator" name="evaluator" required>
+                    <option value="">กรุณาเลือกจังหวัดก่อน</option>
+                </select>
+            </div>
 
-<!-- ชื่อสาขาที่เข้าเยี่ยม -->
-<div class="form-group">
-    <label for="branch">ชื่อสาขาที่เข้าเยี่ยม</label>
-    <select id="branch" name="branch" required>
-        <option value="">เลือกสาขา</option>
-        <option value="โลตัส กาฬสินธุ์">โลตัส กาฬสินธุ์</option>
-        <option value="บิ๊กซี กาฬสินธุ์">บิ๊กซี กาฬสินธุ์</option>
-        <option value="กาฬสินธุ์พลาซ่า 1">กาฬสินธุ์พลาซ่า 1</option>
-        <option value="กาฬสินธุ์พลาซ่า 2">กาฬสินธุ์พลาซ่า 2</option>
-        <option value="โลตัส สมเด็จ">โลตัส สมเด็จ</option>
-        <option value="จีมาร์ท (นิวกันเอง) ในเมือง">จีมาร์ท (นิวกันเอง) ในเมือง</option>
-        <option value="จีมาร์ท (นิวกันเอง) ยางตลาด">จีมาร์ท (นิวกันเอง) ยางตลาด</option>
-        <option value="แฟรี่ซุปเปอร์มาร์เก็ต">แฟรี่ซุปเปอร์มาร์เก็ต</option>
-        <!-- เพิ่มสาขาตามจังหวัด -->
-    </select>
-</div>
+            <!-- ชื่อสาขาที่เข้าเยี่ยม -->
+            <div class="form-group">
+                <label for="branch">ชื่อสาขาที่เข้าเยี่ยม</label>
+                <select id="branch" name="branch" required>
+                    <option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for="visitDate">วันที่เข้าเยี่ยมสาขา</label>
@@ -439,9 +405,9 @@
     </div>
 
     <script>
-        // ⚠️ Paste the Web App URL you copied from Google Apps Script here.
-        const GOOGLE_SCRIPT_URL_GET_DATA = 'https://script.google.com/macros/s/AKfycbxbWHT-XQnLxBQYa4lOcjsdNTcN6EAYXEd9pXjhvt5SYIHLiI3GKrvMC8tZtx2DXlo2Mg/exec';
-        const GOOGLE_SCRIPT_URL_POST_DATA = 'https://script.google.com/macros/s/AKfycbxbWHT-XQnLxBQYa4lOcjsdNTcN6EAYXEd9pXjhvt5SYIHLiI3GKrvMC8tZtx2DXlo2Mg/exec'; // This is your original URL for submitting data.
+        // ⚠️ Paste the Web App URL for your Google Apps Script here.
+        // This URL will be used for both getting data and posting data.
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbWHT-XQnLxBQYa4lOcjsdNTcN6EAYXEd9pXjhvt5SYIHLiI3GKrvMC8tZtx2DXlo2Mg/exec';
     
         const provinceSelect = document.getElementById('province');
         const evaluatorSelect = document.getElementById('evaluator');
@@ -457,9 +423,17 @@
     
         // Fetches data from our Google Script and populates the first dropdown.
         function fetchDataAndPopulateProvinces() {
-            fetch(GOOGLE_SCRIPT_URL_GET_DATA)
-                .then(response => response.json())
+            fetch(GOOGLE_SCRIPT_URL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    if (data.error) {
+                       throw new Error(data.error);
+                    }
                     sheetData = data; // Store the fetched data globally
                     provinceSelect.innerHTML = '<option value="">เลือกจังหวัด</option>'; // Clear existing options
                     
@@ -470,21 +444,22 @@
                 })
                 .catch(error => {
                     console.error('Error fetching dynamic data:', error);
-                    alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาลองใหม่อีกครั้ง');
+                    provinceSelect.innerHTML = '<option value="">โหลดข้อมูลไม่สำเร็จ</option>';
+                    alert('ไม่สามารถโหลดข้อมูลจังหวัดได้ กรุณาตรวจสอบ URL ของ Script และลองใหม่อีกครั้ง');
                 });
         }
     
-        // This event listener is the same as before, but now uses 'sheetData'.
+        // Event listener for province selection.
         provinceSelect.addEventListener('change', function() {
             const persons = sheetData[this.value] || {};
             evaluatorSelect.innerHTML = '<option value="">เลือกผู้ถูกเข้าเยี่ยม</option>';
-            branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
+            branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
             Object.keys(persons).sort().forEach(person => {
                 evaluatorSelect.add(new Option(person, person));
             });
         });
     
-        // This event listener is also the same, just using 'sheetData'.
+        // Event listener for employee selection.
         evaluatorSelect.addEventListener('change', function() {
             const branches = sheetData[provinceSelect.value]?.[this.value] || [];
             branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
@@ -493,7 +468,7 @@
             });
         });
     
-        // The form submission logic remains unchanged.
+        // Event listener for form submission.
         document.getElementById('evaluationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -520,36 +495,37 @@
     
             const formData = new FormData(this);
             formData.append('totalScore', calculateTotalScore());
-            formData.append('timestamp', new Date().toLocaleString('th-TH'));
+            formData.append('timestamp', new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }));
     
             const dataObject = {};
             for (let [key, value] of formData.entries()) {
                 dataObject[key] = value;
             }
     
-            fetch(GOOGLE_SCRIPT_URL_POST_DATA, {
+            fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(dataObject),
-                mode: 'no-cors'
+                mode: 'no-cors' // Use no-cors for simple submissions to Google Apps Script
             })
             .then(() => {
+                // Since no-cors hides the actual response, we assume success if fetch doesn't throw an error.
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'บันทึกผลการประเมิน';
                 success.style.display = 'block';
                 this.reset();
-                // After resetting, we need to re-fetch and populate the provinces again.
-                provinceSelect.innerHTML = '<option value="">เลือกจังหวัด</option>';
-                evaluatorSelect.innerHTML = '<option value="">เลือกผู้ถูกเข้าเยี่ยม</option>';
-                branchSelect.innerHTML = '<option value="">เลือกสาขา</option>';
+                // After resetting, clear the dropdowns and re-fetch the initial data.
+                evaluatorSelect.innerHTML = '<option value="">กรุณาเลือกจังหวัดก่อน</option>';
+                branchSelect.innerHTML = '<option value="">กรุณาเลือกผู้ถูกเข้าเยี่ยมก่อน</option>';
                 fetchDataAndPopulateProvinces(); 
                 success.scrollIntoView({ behavior: 'smooth' });
             })
-            .catch((error) => {
-                console.error('Error:', error);
+            .catch((err) => {
+                console.error('Error:', err);
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'บันทึกผลการประเมิน';
+                error.textContent = 'เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่';
                 error.style.display = 'block';
                 error.scrollIntoView({ behavior: 'smooth' });
             });
@@ -557,6 +533,3 @@
     </script>
 </body>
 </html>
-apps-fileview.texmex_20250821.00_p1
-index.html
-Displaying index.html.
